@@ -5,6 +5,26 @@ Per riportare il progetto allo stato di una giornata specifica del corso, sposta
 
 `git checkout giorno-1`
 
+
+Dopo la clonazinoe del repo, ricordarsi di inizializzare il progetto:
+
+```shell
+# installazione dipendenze composer
+composer install
+
+# installazione dipendenze npm
+npm install
+
+# copia del template delle variabili d'ambiente
+cp .env.example .env
+
+# generazione della chiave di cifratura dell'applicazione
+php artisan key:generate
+
+# migrazione del database
+php artisan migrate
+```
+
 ## Giorno 1 - 01/10/2025
 
 `git checkout giorno-1`
