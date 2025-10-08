@@ -33,4 +33,18 @@ php artisan migrate
 - Struttura del progetto
 - Primi passi con route, controller, view e model.
 
+## Giorno 2 - 01/10/2025
 
+`git checkout giorno-2`
+
+- Mutator e Accessor
+- CRUD sul modello Product
+- CSRF
+- Model Guarding e MassAssignmentException
+- Layout blade
+- Request e Validation
+- Named routes
+- Model binding
+- Route groups
+- Authentication
+- Authorization con Guard
