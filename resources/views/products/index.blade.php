@@ -26,16 +26,16 @@
                     <td>{{ $product->created_at->format('d/m/Y H:i') }}</td>
                     <td>{{ $product->updated_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        @can('edit-product', $product)
+                        @can('edit', $product)
                             <a href="{{ route('products.edit', $product) }}">Modifica</a>
                         @endcan
-                        @auth
+                        @can('destroy', $product)
                             <form method="post" action="{{ route('products.destroy', $product) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit">Cancella</button>
                             </form>
-                        @endauth
+                        @endcan
                     </td>
                 </tr>
             @endforeach

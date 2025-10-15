@@ -33,7 +33,7 @@ php artisan migrate
 - Struttura del progetto
 - Primi passi con route, controller, view e model.
 
-## Giorno 2 - 01/10/2025
+## Giorno 2 - 08/10/2025
 
 `git checkout giorno-2`
 
@@ -48,3 +48,15 @@ php artisan migrate
 - Route groups
 - Authentication
 - Authorization con Guard
+
+## Giorno 3 - 15/10/2025
+
+`git checkout giorno-3`
+
+- Gate e Policy
+- Relations
+  - BelongsTo
+  - HasMany
+  - BelongsToMany
+- Factory con relazioni
+- Lazy e eager loading

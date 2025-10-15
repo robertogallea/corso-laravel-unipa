@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -28,5 +29,10 @@ class Product extends Model
         return Attribute::make(
             get: fn () => \Illuminate\Support\Number::currency($this->price),
         );
+    }
+
+    public function movements(): BelongsToMany
+    {
+        return $this->belongsToMany(Movement::class);
     }
 }

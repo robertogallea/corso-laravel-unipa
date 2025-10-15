@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Movement;
 use App\Models\Product;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,15 +16,38 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $users = User::factory(9)->create();
 
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        Product::factory()
+        $users->prepend($admin);
+
+        $products = Product::factory()
             ->count(100)
+            ->create();
+
+        $movements = Movement::factory()
+            ->count(20)
+            ->recycle($users)
+            ->create();
+
+        $adminMovements = Movement::factory()
+            ->for($admin)
+            ->create();
+
+        $newUserMovements = Movement::factory()
+            ->forUser([
+                'name' => 'Test User 2',
+            ])
+            ->create();
+
+        $movementsWithProducts = Movement::factory()
+            ->count(20)
+            ->recycle($users)
+            ->hasAttached($products->random(3), ['qty' => rand(1, 100)])
             ->create();
     }
 }
