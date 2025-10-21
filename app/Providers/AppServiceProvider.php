@@ -56,9 +56,9 @@ class AppServiceProvider extends ServiceProvider
         // Policy::after()
         // Gate::after()
 
-        DB::listen(function ($query) {
-            dump($query->sql, $query->bindings);
-        });
+//        DB::listen(function ($query) {
+//            dump($query->sql, $query->bindings);
+//        });
 
         // lancia un'eccezione se viene rilevato un lazy loading
 //        Model::preventLazyLoading(!$this->app->isProduction())
