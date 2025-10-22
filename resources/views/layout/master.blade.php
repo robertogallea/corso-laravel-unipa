@@ -18,6 +18,8 @@
             <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">🏠 Home</a>
             <a href="{{ route('products.index') }}"
                class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">📁 Prodotti</a>
+            <a href="{{ route('movements.index') }}"
+               class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">📁 Movimenti</a>
             <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">⚙️ Impostazioni</a>
         </nav>
     </aside>

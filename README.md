@@ -60,3 +60,21 @@ php artisan migrate
   - BelongsToMany
 - Factory con relazioni
 - Lazy e eager loading
+
+## Giorno 4 - 22/10/2025
+
+`git checkout giorno-4`
+
+- Strumenti per il query builder
+- Local scope
+- Global scope
+- Trait
+- Ciclo di vita dell'applicazione
+- Middleware
+  - Globali
+  - Di rotta
+  - Di gruppo
+  - Priorità
+  - Alias e parametri
+  - Terminable middleware
+- Hashing

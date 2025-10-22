@@ -63,7 +63,7 @@ class ProductController extends Controller
     public function update(Product $product, StoreProductRequest $request)
     {
 //        Gate::authorize('edit-product', $product);
-        
+
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
@@ -75,7 +75,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        
+
         return redirect()->route('products.index');
     }
 }
