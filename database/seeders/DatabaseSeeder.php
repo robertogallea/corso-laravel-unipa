@@ -44,10 +44,22 @@ class DatabaseSeeder extends Seeder
             ])
             ->create();
 
+        // crea dei Movement senza prodotti
         $movementsWithProducts = Movement::factory()
             ->count(20)
             ->recycle($users)
-            ->hasAttached($products->random(3), ['qty' => rand(1, 100)])
             ->create();
+
+        // per ciascun Movement
+        foreach ($movements as $movement) {
+            // attacco tre Product
+            foreach (range(1, 3) as $index) {
+                $movement->products()->attach(
+                    $products->random(1),
+                    ['qty' => rand(5,10)]
+                );
+            }
+            $movement->save();
+        }
     }
 }

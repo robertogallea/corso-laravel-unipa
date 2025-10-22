@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\MovementController;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/products')->name('dashboard');
-
 
 
 Route::prefix('/products')->name('products.')->middleware('auth')->group(function () {
@@ -16,8 +17,12 @@ Route::prefix('/products')->name('products.')->middleware('auth')->group(functio
     Route::delete('/{product}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('destroy')->middleware('can:delete,product');
 });
 
+Route::get('/movements', [MovementController::class, 'index'])->name('movements.index');
 
-Route::get('/test-gate/{product}', function(Product $product) {
+Route::get('/middleware', fn(Request $request) => dd($request))->middleware('set-attribute:my-attribute,my-value');
+
+
+Route::get('/test-gate/{product}', function (Product $product) {
     dump($product->price);
 
     // inspect fornisce come risposta la response completa
@@ -31,7 +36,6 @@ Route::get('/test-gate/{product}', function(Product $product) {
     }
 
 
-
 //    \Illuminate\Support\Facades\Gate::denies('edit-product', $product); // duale di allows
 
 //    \Illuminate\Support\Facades\Gate::any(['edit-product', 'test'], $product); // tutte le abilità soddisfatte
@@ -43,8 +47,8 @@ Route::get('/test-gate/{product}', function(Product $product) {
 });
 
 
-Route::get('/relations', function() {
-   // lazy loading (N+1 problem)
+Route::get('/relations', function () {
+    // lazy loading (N+1 problem)
     $users = \App\Models\User::all();
 
     // eager loading
@@ -53,15 +57,15 @@ Route::get('/relations', function() {
     // eager lazy loading
 //   $users->load('movements', 'movements.product');
 
-   foreach ($users as $user) {
-       dump($user->movements);
-       foreach ($user->movements as $movement) {
-           dump($movement->products);
-       }
-   }
+    foreach ($users as $user) {
+        dump($user->movements);
+        foreach ($user->movements as $movement) {
+            dump($movement->products);
+        }
+    }
 });
 
-Route::get('/relations-count', function() {
+Route::get('/relations-count', function () {
 
     // precarico in movements_count il numero di movements di ciascun user
     $users = \App\Models\User::withCount('movements')->get();
@@ -71,7 +75,7 @@ Route::get('/relations-count', function() {
     }
 });
 
-Route::get('/relations-sum', function() {
+Route::get('/relations-sum', function () {
 
     // precarico in movements_count il numero di movements di ciascun user
     $users = \App\Models\User::withSum('movements', 'user_id')
@@ -88,4 +92,4 @@ Route::get('/relations-sum', function() {
     }
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

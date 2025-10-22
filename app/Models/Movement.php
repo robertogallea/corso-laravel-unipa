@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasTotals;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Movement extends Model
 {
+    use HasTotals;
+
     /** @use HasFactory<\Database\Factories\MovementFactory> */
     use HasFactory;
 
@@ -22,4 +25,6 @@ class Movement extends Model
         return $this->belongsToMany(Product::class)
             ->withPivot(['qty']);
     }
+
+
 }
