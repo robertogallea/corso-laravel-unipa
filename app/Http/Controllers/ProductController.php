@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CheapProductCreated;
+use App\Events\ExpensiveProductCreated;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,9 +15,17 @@ class ProductController extends Controller
     //
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(perPage: 20, pageName: 'products_page')
+            ->withQueryString()
+            ->fragment('products');
 
-        return view('products.index', compact('products'));
+
+        $cheapProducts = Product::where('price', '<', 100000)
+            ->paginate(perPage: 5, pageName: 'cheap_products_page')
+            ->withQueryString()
+            ->fragment('cheap_products');
+
+        return view('products.index', compact('products', 'cheapProducts'));
     }
 
     public function create()
@@ -48,6 +59,12 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
         ]);
+
+        if ($product->price > 10) {
+            ExpensiveProductCreated::dispatch($product);
+        } elseif ($product->price < 5) {
+            CheapProductCreated::dispatch($product);
+        }
 
         return redirect()->route('products.index');
 

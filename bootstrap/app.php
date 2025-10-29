@@ -46,6 +46,9 @@ return Application::configure(basePath: dirname(__DIR__))
             ShowMessage::class,
         ]);
     })
+//    ->withEvents([  // registrazione percorsi alternativi per i listeners
+//        __DIR__ . '/../app/MyListeners'
+//    ])
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

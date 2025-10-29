@@ -78,3 +78,13 @@ php artisan migrate
   - Alias e parametri
   - Terminable middleware
 - Hashing
+
+## Giorno 5 - 29/10/2025
+
+`git checkout giorno-5`
+
+- Encryption
+- Morphable models
+- Collection, EloquentCollection, LazyCollection
+- Pagination
+- Observer pattern: Events e Listeners

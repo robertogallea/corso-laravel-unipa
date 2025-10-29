@@ -3,16 +3,21 @@
 namespace App\Models;
 
 use App\Models\Scopes\PriceLesserThan5000;
+use App\Traits\Annotable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-#[ScopedBy(PriceLesserThan5000::class)] // Scope globale applicato tramite PHP Attribute
+//#[ScopedBy(PriceLesserThan5000::class)] // Scope globale applicato tramite PHP Attribute
 class Product extends Model
 {
+    use Annotable;
+
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
@@ -20,6 +25,11 @@ class Product extends Model
 //    protected $guarded = null; // abilita la protezione per nessun attributo
 //    protected $fillable = ['*']; // disabilita la protezione per tutti gli attributi
 
+    protected $casts = [
+        'patent' => 'encrypted'
+    ];
+
+    protected $table = 'products';
 
     protected static function booted()
     {
@@ -51,4 +61,5 @@ class Product extends Model
     {
         return $this->belongsToMany(Movement::class);
     }
+
 }

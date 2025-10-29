@@ -2,9 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\ExpensiveProductCreated;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -65,5 +70,30 @@ class AppServiceProvider extends ServiceProvider
 
         // applica l'eager loading al livello globale
 //        Model::automaticallyEagerLoadRelationships();
+
+        Relation::morphMap([
+            'user' => User::class,
+            'product' => Product::class,
+        ]);
+
+        Collection::macro('timesIndex', function () {
+            return $this->map(function (int $value, int $index) {
+                return $value * $index;
+            });
+        });
+
+//        Paginator::useBootstrapFive();  // three or four
+//        Paginator::Tailwind(); //default
+
+        // Listener registrato manualmente
+//        \Event::listen(
+//            NomeEvento::class,
+//            NomeListener::class,
+//        );
+
+        // Listener anonimo
+        \Event::listen(function (ExpensiveProductCreated $event) {
+            logger()->info("Prodotto costoso " . $event->product->price);
+        });
     }
 }

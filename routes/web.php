@@ -92,4 +92,11 @@ Route::get('/relations-sum', function () {
     }
 });
 
+Route::get('/chunks', function () {
+   \App\Models\Product::chunk(1000, function ($products, $i) {
+       dump($products->count());
+       dump("Blocco $i");
+   });
+});
+
 require __DIR__ . '/auth.php';
