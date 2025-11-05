@@ -19,6 +19,8 @@ class MovementFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'description' => $this->faker->paragraph(),
+            'status' => $this->faker->randomElement(['D', 'A', 'C']),
         ];
     }
 }

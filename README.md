@@ -88,3 +88,14 @@ php artisan migrate
 - Collection, EloquentCollection, LazyCollection
 - Pagination
 - Observer pattern: Events e Listeners
+
+## Giorno 6 - 05/11/2025
+
+`git checkout giorno-6`
+
+- Installazione api scaffolding (Sanctum)
+- Generazione token
+- Definizione endpoint api
+- Definizione resources
+- Filtraggio / Ricerca / Ordinamento mediante filtri per il modello e uso del Service Container
+- Utilizzo dei token permission nelle policy
