@@ -99,3 +99,12 @@ php artisan migrate
 - Definizione resources
 - Filtraggio / Ricerca / Ordinamento mediante filtri per il modello e uso del Service Container
 - Utilizzo dei token permission nelle policy
+
+## Giorno 7 - 12/11/2025
+
+`git checkout giorno-7`
+
+- Gestione della cache
+- Uso del Service Container e Dependency Injection
+- Dependency Inversion
+- Console Commands

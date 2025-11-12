@@ -3,9 +3,17 @@
 namespace App\Providers;
 
 use App\Events\ExpensiveProductCreated;
+use App\Http\Controllers\Api\V1\UserController;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\AnotherService;
+use App\Services\CachedGithubUserService;
+use App\Services\GithubUserService;
+use App\Services\RandomService;
+use App\Services\TestService;
+use App\Services\UserServiceInterface;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
@@ -95,5 +103,53 @@ class AppServiceProvider extends ServiceProvider
         \Event::listen(function (ExpensiveProductCreated $event) {
             logger()->info("Prodotto costoso " . $event->product->price);
         });
+
+        $this->app->singleton(RandomService::class, function () {
+            return new RandomService();
+        });
+
+        $this->app->singleton(AnotherService::class, function ($app) {
+            return new AnotherService($app->make(TestService::class));
+        });
+
+        // singletonIf registra un singleton se non è già stato registrato
+//        $this->app->singletonIf(AnotherService::class, function ($app) {
+//            return new AnotherService($app->make(TestService::class));
+//        });
+
+        $this->app->bind(
+            UserServiceInterface::class,
+            CachedGithubUserService::class
+        );
+
+//        $this->app->instance(
+//            CachedGithubUserService::class,
+//            new CachedGithubUserService(app(GithubUserService::class), 10)
+//        );
+
+        $this->app->when(CachedGithubUserService::class)
+            ->needs('$ttl')
+            ->giveConfig('custom.cache-ttl');
+
+
+        // contextual binding
+//        $this->app->when(UserController::class)
+//            ->needs(UserServiceInterface::class)
+//            ->give(GithubUserService::class);
+
+
+
+//        $this->app->bind(
+//            UserServiceInterface::class,
+//            function (Application $app) {
+//                if ($app->runningUnitTests()) {
+//                    return new DummyUserService();
+//                }
+//
+//                return $app->make(GithubUserService::class);
+//            }
+//        );
+
     }
+
 }

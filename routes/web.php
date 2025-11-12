@@ -93,10 +93,52 @@ Route::get('/relations-sum', function () {
 });
 
 Route::get('/chunks', function () {
-   \App\Models\Product::chunk(1000, function ($products, $i) {
-       dump($products->count());
-       dump("Blocco $i");
-   });
+    \App\Models\Product::chunk(1000, function ($products, $i) {
+        dump($products->count());
+        dump("Blocco $i");
+    });
+});
+
+
+Route::get('test-cache', function () {
+
+//    if (cache()->has('test-cache')) {
+//        return cache()->get('test-cache');
+//    }
+//
+//    return cache()->set('test-cache', rand(1, 100), 15);
+
+    // equivalente a
+
+    return cache()->remember('test-cache', 15, fn() => rand(1, 100));
+//   return cache()->rememberForever('test-cache', fn() => rand(1, 100));  // scadenza infinita
+});
+
+
+Route::get('/flex-cache', function () {
+    $start = microtime(true);
+//    $result = cache()->remember('not-flex-cache', 15, function () {
+//        return Http::asJson()->get('https://api.github.com/users/laravel')->json();
+//    });
+    $result = cache()->flexible('flex-cache', [5, 15], function () {
+        return Http::asJson()->get('https://api.github.com/users/laravel')->json();
+    });
+    $end = microtime(true);
+    dump($end - $start);
+
+    dump($result);
+
+    // entro i 5 secondi il valore è valido e viene restituito
+    // fra i 5+ secondi e 15 il valore è valido, viene restituito e la cache viene rinfrescata dietro le quinte
+    // dopo i 15 secondi il valore non è valido, viene rinfrescata la cache e viene restituito il valore fresco
+});
+
+Route::get('/di', function (\App\Services\UserServiceInterface $service) {
+
+//    app(\App\Services\UserServiceInterface::class)->getUser('laravel');
+//    return \App\Facades\Github::getUser('laravel');
+
+    return $service->getUser('laravel');
 });
 
 require __DIR__ . '/auth.php';
