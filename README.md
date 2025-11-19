@@ -108,3 +108,11 @@ php artisan migrate
 - Uso del Service Container e Dependency Injection
 - Dependency Inversion
 - Console Commands
+
+## Giorno 8 - 19/11/2025
+
+`git checkout giorno-8`
+
+- Scheduling
+- Gestione delle code
+- Invio delle email 

@@ -1,0 +1,3 @@
+{{ $product->name }}
+
+{{ $var1 }}

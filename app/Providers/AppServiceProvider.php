@@ -13,6 +13,7 @@ use App\Services\RandomService;
 use App\Services\TestService;
 use App\Services\UserServiceInterface;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -150,6 +151,14 @@ class AppServiceProvider extends ServiceProvider
 //            }
 //        );
 
+
+        \RateLimiter::for('api-job', function (object $job) {
+//            return $job->user->plan->isPremium() ?
+//                Limit::none() :
+//                Limit::perMinute(30)->by($job->user->id);
+
+            return Limit::perMinute(30);
+        });
     }
 
 }

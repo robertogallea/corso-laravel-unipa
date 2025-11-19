@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\DispatchProductNotifications;
 use App\Models\Scopes\PriceLesserThan5000;
 use App\Traits\Annotable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -40,6 +41,10 @@ class Product extends Model
 //
 //        // Global scope con classe
 //        static::addGlobalScope(new PriceLesserThan5000());
+
+        static::created(function ($product) {
+            DispatchProductNotifications::dispatch($product);
+        });
     }
 
     public function price(): Attribute

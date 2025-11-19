@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MovementController;
+use App\Mail\TestMail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -141,4 +142,32 @@ Route::get('/di', function (\App\Services\UserServiceInterface $service) {
     return $service->getUser('laravel');
 });
 
+
+Route::get('/test-queue', function () {
+   \App\Jobs\TestJob::dispatch('test');
+//   \App\Jobs\TestJob::dispatchIf(function() {return rand(0,1); }, 'test'); // dispatch condizionale
+//   \App\Jobs\TestJob::dispatchUnless(function() {return rand(0,1); }, 'test'); // dispatch condizionale duale
+//    \App\Jobs\TestJob::dispatchSync('test'); // esecuzione sincrona
+    \App\Jobs\TestJob::dispatch('test')->delay(30); // delay in numero di secondi
+    \App\Jobs\TestJob::dispatch('test')->delay(now()->addDay()); // delay in numero di secondi
+    \App\Jobs\EncryptedTestJob::dispatch('test')->delay(now()->addDay()); // delay in numero di secondi
+});
+
+Route::get('/test-unique', function () {
+   \App\Jobs\UniqueJob::dispatch('testdb');
+});
+
+
+Route::get('/test-limited-job', function () {
+   collect(range(1,50))->each(function ($i) {
+       \App\Jobs\RateLimitedJob::dispatch();
+   });
+});
+
+
+Route::get('/mail', function () {
+   return new \App\Mail\MarkdownNewProductEmail(Product::first());
+});
+
 require __DIR__ . '/auth.php';
+
